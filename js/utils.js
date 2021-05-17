@@ -1,5 +1,3 @@
-import { getRequestIdleCallback } from './idletimeout-shim';
-
 const GPT_SRC = {
   standard: 'securepubads.g.doubleclick.net',
   limitedAds: 'pagead2.googlesyndication.com',
