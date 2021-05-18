@@ -3,8 +3,6 @@ const GPT_SRC = {
   limitedAds: 'pagead2.googlesyndication.com',
 };
 
-const delayGPTScriptLoadTimeBy = 2500;
-
 function doloadGPTScript(resolve, reject, limitedAds, timerId = null) {
   window.googletag = window.googletag || {};
   window.googletag.cmd = window.googletag.cmd || [];
@@ -25,12 +23,12 @@ function doloadGPTScript(resolve, reject, limitedAds, timerId = null) {
   }
 }
 
-export function loadGPTScript(limitedAds = false, deferAds = true) {
-  if (deferAds) {
+export function loadGPTScript(limitedAds = false, deferAdsBy = 2500) {
+  if (deferAdsBy > 0) {
     return new Promise((resolve, reject) => {
       const timerId = setTimeout(() => {
         doloadGPTScript(resolve, reject, limitedAds, timerId);
-      }, delayGPTScriptLoadTimeBy);
+      }, deferAdsBy);
     });
   }
   return new Promise ((resolve, reject) =>  {

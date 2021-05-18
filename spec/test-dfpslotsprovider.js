@@ -228,7 +228,7 @@ describe('DFPSlotsProvider', () => {
       DFPManager.load = sinon.spy(DFPManager, 'load');
       DFPManager.reload = sinon.spy(DFPManager, 'reload');
       DFPManager.configureLimitedAds = sinon.spy(DFPManager, 'configureLimitedAds');
-      DFPManager.configureDeferAds = sinon.spy(DFPManager, 'configureDeferAds');
+      DFPManager.configureDeferAdsBy = sinon.spy(DFPManager, 'configureDeferAdsBy');
     });
 
     it('Registers an AdSlot', () => {
@@ -809,12 +809,12 @@ describe('DFPSlotsProvider', () => {
       sinon.assert.calledWith(DFPManager.configureLimitedAds, true);
     });
 
-    it('Does deferAds if prop is provided', () => {
+    it('Does deferAdsBy time if prop is provided', () => {
       const providerProps = {
         dfpNetworkId: '1000',
         adUnit: 'foo/bar/baz',
         limitedAds: true,
-        deferAds: true
+        deferAdsBy: 5500
       };
 
       const container = document.createElement('div');
@@ -823,8 +823,8 @@ describe('DFPSlotsProvider', () => {
         container,
       );
 
-      sinon.assert.calledOnce(DFPManager.configureDeferAds);
-      sinon.assert.calledWith(DFPManager.configureDeferAds, true);
+      sinon.assert.calledOnce(DFPManager.configureDeferAdsBy);
+      sinon.assert.calledWith(DFPManager.configureDeferAdsBy, 5500);
     });
 
 
@@ -838,7 +838,7 @@ describe('DFPSlotsProvider', () => {
       DFPManager.load.restore();
       DFPManager.reload.restore();
       DFPManager.configureLimitedAds.restore();
-      DFPManager.configureDeferAds.restore();
+      DFPManager.configureDeferAdsBy.restore();
     });
 
     afterAll(() => {
