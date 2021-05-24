@@ -3,7 +3,7 @@ const GPT_SRC = {
   limitedAds: 'pagead2.googlesyndication.com',
 };
 
-function doloadGPTScript(resolve, reject, limitedAds) {
+function doloadGPTScript(resolve, reject, limitedAds, timerId = null) {
   window.googletag = window.googletag || {};
   window.googletag.cmd = window.googletag.cmd || [];
 
@@ -18,10 +18,20 @@ function doloadGPTScript(resolve, reject, limitedAds) {
     resolve(window.googletag);
   };
   document.getElementsByTagName('head')[0].appendChild(scriptTag);
+  if (timerId !== null) {
+    clearTimeout(timerId);
+  }
 }
 
-export function loadGPTScript(limitedAds = false) {
-  return new Promise((resolve, reject) => {
+export function loadGPTScript(limitedAds = false, deferAdsBy = 2500) {
+  if (deferAdsBy > 0) {
+    return new Promise((resolve, reject) => {
+      const timerId = setTimeout(() => {
+        doloadGPTScript(resolve, reject, limitedAds, timerId);
+      }, deferAdsBy);
+    });
+  }
+  return new Promise ((resolve, reject) =>  {
     doloadGPTScript(resolve, reject, limitedAds);
-  });
+  })
 }

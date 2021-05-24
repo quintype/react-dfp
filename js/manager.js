@@ -14,6 +14,7 @@ let managerAlreadyInitialized = false;
 const globalTargetingArguments = {};
 const globalAdSenseAttributes = {};
 let limitedAds = false;
+let deferAdsBy = 2500;
 
 const DFPManager = Object.assign(new EventEmitter().setMaxListeners(0), {
 
@@ -31,6 +32,10 @@ const DFPManager = Object.assign(new EventEmitter().setMaxListeners(0), {
 
   configureDisableInitialLoad(value) {
     disableInitialLoadEnabled = !!value;
+  },
+
+  configureDeferAdsBy(value) {
+    deferAdsBy = value;
   },
 
   configureLazyLoad(enable = true, config = null) {
@@ -172,7 +177,7 @@ const DFPManager = Object.assign(new EventEmitter().setMaxListeners(0), {
 
   getGoogletag() {
     if (googleGPTScriptLoadPromise === null) {
-      googleGPTScriptLoadPromise = Utils.loadGPTScript(limitedAds);
+      googleGPTScriptLoadPromise = Utils.loadGPTScript(limitedAds, deferAdsBy);
     }
     return googleGPTScriptLoadPromise;
   },
